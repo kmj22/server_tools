@@ -1,0 +1,4 @@
+home ansible_host=jaremko.ddns.net
+
+[home_servers]
+home
