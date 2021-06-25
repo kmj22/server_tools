@@ -5,7 +5,7 @@ FROM crawforc3/raspberrypi-uwsgi-nginx-flask
 ENV STATIC_URL /static
 ENV STATIC_PATH /var/www/app/static
 
-COPY ./MLPackageTest /mltest
+COPY ./flask-ml /mltest
 RUN pip install -e /mltest
 
 COPY ./flask-home/app /app
