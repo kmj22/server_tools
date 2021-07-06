@@ -2,30 +2,21 @@
   hosts: home_servers
   remote_user: ansible
   tasks:
-          - name: Leaving a mark
-            command: "touch ansible_wuz_here2"
-          - name: copy Dockerfile
-            copy:
-                    src: ./files/Dockerfile
-                    dest: /home/kevyn/code
-
-          - name: Install docker
-            pip:
-                    name: docker
-            become: yes
-
-          - name: Build container
-            docker_image:
-                    name: docker.test
-                    source: build
-                    build:
-                            path: /home/kevyn/code
-                    state: present
-            become: yes
-
-          - name: Start container
-            docker_container:
-                    name: docker.test
-                    image: docker.test
-                    ports:
-                            - "5000:80"
+    - name: Create code directory
+      file:
+        path: ~/code
+        state: directory
+        mode: '0755'
+         
+    - name: Copy flask-home
+      synchronize:
+        src: "{{ WORKSPACE }}/flask-home/"
+        dest: "~/code/flask-home/"
+        
+    - name: Copy flask-ml
+      synchronize:
+        src: "{{ WORKSPACE }}/flask-ml/"
+        dest: "~/code/flask-ml/"
+            
+    - name: Deploy code
+      include: deploy_code.yml

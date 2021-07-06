@@ -1,0 +1,25 @@
+- name: copy Dockerfile
+  copy:
+    src: ./files/Dockerfile
+    dest: ~/code
+
+- name: Install docker
+  pip:
+    name: docker
+  become: yes
+
+- name: Build container
+  docker_image:
+    name: docker.test
+    source: build
+    build:
+      path: ~/code
+    state: present
+  become: yes
+
+- name: Start container
+  docker_container:
+    name: docker.test
+    image: docker.test
+    ports:
+      - "5000:80"
